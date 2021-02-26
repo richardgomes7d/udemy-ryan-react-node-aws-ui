@@ -26,6 +26,7 @@ const Layout = ({ children }) => {
             <NavTab content="Home" href="/"></NavTab>
             <NavTab content="Login" href="/login"></NavTab>
             <NavTab content="Register" href="/register"></NavTab>
+            <NavTab content="Encrypt" href="/encrypt"></NavTab>
         </ul>
     )
     return <React.Fragment>

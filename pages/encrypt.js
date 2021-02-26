@@ -8,7 +8,7 @@ import crypto from 'crypto'
 
 const Encrypt = () => {
     const [state, setState] = useState({
-        salt: '123456',
+        salt: '1321608104587',
         password: 'wingardium7',
         hashedPassword: '',
         error: '',
