@@ -3,7 +3,7 @@ import axios from 'axios'
 import Layout from '../components/Layout'
 import { showErrorMessage, showSuccessMessage } from '../helpers/alerts'
 import { API } from '../config'
-import { authenticate } from '../helpers/auth'
+import { authenticate, isAuth } from '../helpers/auth'
 import Router from 'next/router'
 
 const Login = () => {
@@ -14,6 +14,10 @@ const Login = () => {
         success: '',
         buttonText: 'Login'
     })
+
+    useEffect(() => {
+        isAuth() && Router.push('/')
+    }, [])
 
     const { name, email, password, error, success, buttonText } = state
 
@@ -45,7 +49,7 @@ const Login = () => {
                     buttonText: 'Submitted',
                     success: response.data.message,
                 })
-                authenticate(response, () => Router.push('/'))
+                authenticate(response, () => isAuth() && isAuth().role === 'admin' ? Router.push('/admin') : Router.push('/user'))
             }
         } catch (error) {
             console.log({ error })

@@ -16,7 +16,7 @@ export const removeCookie = (key) => {
 
 export const getCookie = (key) => {
     if (process.browser) {
-        cookie.get(key)
+        return cookie.get(key)
     }
 }
 
@@ -36,7 +36,7 @@ export const isAuth = () => {
     if (process.browser) {
         const cookieChecked = getCookie('token')
         const user = localStorage.getItem('user')
-        if (cookieCheked && user) {
+        if (cookieChecked && user) {
             return JSON.parse(user)
         }
         return false
