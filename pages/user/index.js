@@ -1,3 +1,5 @@
-const User = () => <h1>User page</h1>
+import Layout from '../../components/Layout'
+
+const User = () => <Layout>User page</Layout>
 
 export default User

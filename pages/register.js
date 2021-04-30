@@ -60,7 +60,7 @@ const Register = () => {
             setState({
                 ...state,
                 buttonText: 'Register',
-                // error: error.response.data.error
+                error: error.response.data.error
             })        
         }
     }

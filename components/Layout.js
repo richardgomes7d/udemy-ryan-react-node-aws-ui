@@ -1,6 +1,7 @@
 import React from 'react'
 import NavTab from './NavTab'
 import Router from 'next/router'
+import { isAuth, logout } from '../helpers/auth'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 
@@ -24,9 +25,27 @@ const Layout = ({ children }) => {
     const nav = () => (
         <ul className="nav nav-tabs">
             <NavTab content="Home" href="/"></NavTab>
-            <NavTab content="Login" href="/login"></NavTab>
-            <NavTab content="Register" href="/register"></NavTab>
             <NavTab content="Encrypt" href="/encrypt"></NavTab>
+            {!isAuth() && (
+                <React.Fragment>
+                    <NavTab content="Login" href="/login"></NavTab>
+                    <NavTab content="Register" href="/register"></NavTab>
+                </React.Fragment>
+            )}
+
+            {isAuth() && isAuth().role === 'admin' && (
+                <NavTab content={ isAuth().name } href="/admin" ml="ml-auto"></NavTab>
+            )}
+            {isAuth() && isAuth().role === 'subscriber' && (
+                <NavTab content={ isAuth().name } href="/user" ml="ml-auto"></NavTab>
+            )}
+            {isAuth() && (
+                <li className="nav-item">
+                    <a onClick={logout} className="nav-link">
+                        Logout
+                    </a>
+                </li>
+            )}
         </ul>
     )
     return <React.Fragment>
