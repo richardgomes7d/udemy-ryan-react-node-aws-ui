@@ -3,6 +3,8 @@ import axios from 'axios'
 import Layout from '../components/Layout'
 import { showErrorMessage, showSuccessMessage } from '../helpers/alerts'
 import { API } from '../config'
+import { authenticate } from '../helpers/auth'
+import Router from 'next/router'
 
 const Login = () => {
     const [state, setState] = useState({
@@ -24,33 +26,35 @@ const Login = () => {
         console.table({ email, password })
         setState({ ...state, buttonText: 'Logging in'})
         try {
-          const response = await axios.post(`${API}/login`, {
-                  email,
-                  password
-          })
-          console.log({ response })
-          if (response.data.error) {
-            setState({
+            const response = await axios.post(`${API}/login`, {
+                email,
+                password
+            })
+            console.log({ response })
+            if (response.data.error) {
+                setState({
                 ...state,
                 buttonText: 'Login',
                 error: response.data.error
             })
-          } else {
-              setState({
-                  ...state,
-                  email: '',
-                  password: '',
-                  buttonText: 'Submitted',
-                  success: response.data.message,
-              })
-          }
+            } else {
+                setState({
+                    ...state,
+                    email: '',
+                    password: '',
+                    buttonText: 'Submitted',
+                    success: response.data.message,
+                })
+                authenticate(response, () => Router.push('/'))
+            }
         } catch (error) {
             console.log({ error })
             setState({
                 ...state,
                 buttonText: 'Login',
-                error: error.response.data.error
-            })        
+                // this used to be error.response.data.error not sure if there are 2 types of errors ¯\_(ツ)_/¯
+                error: error.message
+            })
         }
     }
 
