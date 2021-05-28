@@ -28,7 +28,7 @@ const Layout = ({ children }) => {
             <NavTab content="Encrypt" href="/encrypt"></NavTab>
             {!isAuth() && (
                 <React.Fragment>
-                    <NavTab content="Login" href="/login"></NavTab>
+                    <NavTab content="Login" href="/login" ml="ml-auto"></NavTab>
                     <NavTab content="Register" href="/register"></NavTab>
                 </React.Fragment>
             )}
