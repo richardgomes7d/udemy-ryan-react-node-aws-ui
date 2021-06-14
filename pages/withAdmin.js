@@ -23,7 +23,6 @@ const withAdmin = Page => {
         }
 
         if (!user) {
-            console.log('34')
             context.res.writeHead(302, {
                 Location: '/'
             })
