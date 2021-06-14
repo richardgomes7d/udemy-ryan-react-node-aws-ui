@@ -23,8 +23,6 @@ export const getCookieFromServer = (key, req) => {
     if (!req.headers.cookie) {
         return undefined
     }
-    console.log('req.headers', req.headers)
-    console.log('req.headers.cookie', req.headers.cookie)
     let token = req.headers.cookie.split(';').find(cookie => cookie.trim().startsWith(`${key}=`))
     if (!token) {
         return undefined

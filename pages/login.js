@@ -34,7 +34,6 @@ const Login = () => {
                 email,
                 password
             })
-            console.log({ response })
             if (response.data.error) {
                 setState({
                 ...state,
@@ -52,7 +51,7 @@ const Login = () => {
                 authenticate(response, () => isAuth() && isAuth().role === 'admin' ? Router.push('/admin') : Router.push('/user'))
             }
         } catch (error) {
-            console.log({ error })
+            // console.log({ error })
             setState({
                 ...state,
                 buttonText: 'Login',

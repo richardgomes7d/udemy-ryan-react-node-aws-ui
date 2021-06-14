@@ -36,7 +36,6 @@ const Register = () => {
                     email,
                     password
             })
-            console.log({ response })
 
             if (response.data.error) {
                 setState({
@@ -56,7 +55,7 @@ const Register = () => {
             }
 
         } catch (error) {
-            console.log({ error })
+            // console.log({ error })
             setState({
                 ...state,
                 buttonText: 'Register',

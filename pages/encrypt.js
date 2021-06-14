@@ -30,7 +30,7 @@ const Encrypt = () => {
                 .update(password)
                 .digest('hex');
         } catch (err) {
-            console.log(err)
+            // console.log(err)
             return '';
         }
     }
