@@ -34,30 +34,28 @@ const Login = () => {
                 email,
                 password
             })
-            if (response.data.error) {
-                setState({
+            setState({
                 ...state,
-                buttonText: 'Login',
-                error: response.data.error
+                email: '',
+                password: '',
+                buttonText: 'Submitted',
+                success: response.data.message,
             })
+            authenticate(response, () => isAuth() && isAuth().role === 'admin' ? Router.push('/admin') : Router.push('/user'))            
+        } catch (error) {
+            if (!error.response?.data) {
+                setState({
+                    ...state,
+                    buttonText: 'Login',
+                    error: error.message
+                })
             } else {
                 setState({
                     ...state,
-                    email: '',
-                    password: '',
-                    buttonText: 'Submitted',
-                    success: response.data.message,
+                    buttonText: 'Login',
+                    error: error.response.data.message
                 })
-                authenticate(response, () => isAuth() && isAuth().role === 'admin' ? Router.push('/admin') : Router.push('/user'))
             }
-        } catch (error) {
-            // console.log({ error })
-            setState({
-                ...state,
-                buttonText: 'Login',
-                // this used to be error.response.data.error not sure if there are 2 types of errors ¯\_(ツ)_/¯
-                error: error.message
-            })
         }
     }
 
