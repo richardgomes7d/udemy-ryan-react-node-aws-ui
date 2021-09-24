@@ -5,6 +5,7 @@ import { showErrorMessage, showSuccessMessage } from '../helpers/alerts'
 import { API } from '../config'
 import { authenticate, isAuth } from '../helpers/auth'
 import Router from 'next/router'
+import Link from 'next/link'
 
 const Login = () => {
     const [state, setState] = useState({
@@ -22,7 +23,13 @@ const Login = () => {
     const { name, email, password, error, success, buttonText } = state
 
     const handleChange = name => e => {
-        setState({ ...state, [name]: e.target.value, error: '', success: '', buttonText: 'Login' })
+        setState({
+            ...state,
+            [name]: e.target.value,
+            error: '',
+            success: '',
+            buttonText: 'Login'
+        })
     }
 
     const handleSubmit = async e => {
@@ -96,6 +103,9 @@ const Login = () => {
                 {error && showErrorMessage(error)}
                 <br />
                 {loginForm()}
+                <Link href="/auth/password/forgot">
+                    <a className="float-right">Forgot Password</a>
+                </Link>
                 <hr />
                 {JSON.stringify(state)}
             </div>
