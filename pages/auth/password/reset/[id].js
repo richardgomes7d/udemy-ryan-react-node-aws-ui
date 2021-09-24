@@ -1,22 +1,35 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import jwt from 'jsonwebtoken'
 import axios from 'axios'
-import { showErrorMessage, showSuccessMessage } from '../../../helpers/alerts'
-import { API } from '../../../config'
-import Layout from '../../../components/Layout'
+import { showErrorMessage, showSuccessMessage } from '../../../../helpers/alerts'
+import { API } from '../../../../config'
+import { withRouter } from 'next/router'
+import Layout from '../../../../components/Layout'
 
-const ForgotPassword = () => {
+const ResetPassword = ({ router }) => {
     const [state, setState] = useState({
-        email: '',
-        buttonText: 'Forgot Password',
+        name: '',
+        token: '',
+        newPassword: '',
+        buttonText: 'Reset Password',
         success: '',
         error: '',
     })
-    const { email, buttonText, success, error } = state
+
+    const { name, token, newPassword, buttonText, success, error } = state
+
+    useEffect(() => {
+        let token = router.query.id
+        if (token) {
+            const { name } = jwt.decode(token)
+            setState({ ...state, name, token })
+        }
+    }, [router])
 
     const handleChange = e => {
         setState({
             ...state,
-            email: e.target.value,
+            newPassword: e.target.value,
             success: '',
             error: '',
         })
@@ -24,35 +37,36 @@ const ForgotPassword = () => {
 
     const handleSubmit = async e => {
         e.preventDefault()
-        console.log('post email to', email)
+        
+        setState({ ...state, buttonText: 'Resetting' });
         try {
-            const response = await axios.put(`${API}/forgot-password`, { email })
+            const response = await axios.put(`${API}/reset-password`, { newPassword, resetPasswordLink: token })
             console.log('Forgot Password response', response)
             setState({
                 ...state,
-                email: '',
+                newPassword: '',
                 buttonText: 'Done',
                 success: response.data.message
             })
         } catch (error) {
-            console.log('Forgot Password error', error)
+            console.log('Reset Password error', error)
             setState({
                 ...state,
-                buttonText: 'Forgot Password',
+                buttonText: 'Reset Password',
                 error: error.response.data.error
             })
         }
     }
 
-    const passwordForgotForm = () => (
+    const passwordResetForm = () => (
         <form onSubmit={handleSubmit}>
             <div className="form-group">
                 <input
-                    type="email"
+                    type="password"
                     className="form-control"
                     onChange={handleChange}
-                    value={email}
-                    placeholder="Type your email"
+                    value={newPassword}
+                    placeholder="Type your new password"
                     required
                 />
             </div>
@@ -66,15 +80,15 @@ const ForgotPassword = () => {
         <Layout>
             <div className="row">
                 <div className="col-md-6 offset-md-3">
-                    <h1>Forgot Password</h1>
+                    <h1>Hi {name}, ready to reset your password?</h1>
                     <br/>
                     {success && showSuccessMessage(success)}
                     {error && showErrorMessage(error)}
-                    {passwordForgotForm()}
+                    {passwordResetForm()}
                 </div>
             </div>
         </Layout>
     )
 }
 
-export default ForgotPassword
+export default withRouter(ResetPassword)
